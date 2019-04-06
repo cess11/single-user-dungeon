@@ -13,20 +13,24 @@
 
 (class +Room +SudObj)
 #(rel its (+List +Link) NIL (+Item)) # items 
-(rel lvs (+Joint +Link) loc (+Living)) # living 
+(rel lvs (+List +Joint) loc (+Living)) # living 
 #(rel rms (+List +Link) NIL (+Room))
 
-(dm spawnMonster> (Sht Lng)
-    (let Monster (new! '(+Monster) 
-        'id (genKey 'id '+Monster) 
-        'sht "Typical monster." 
-        'lng "This monster has a leg protruding from its shoulder." 
-        'hp 100 
-        'att 20 
-        'def 20 
-        'pwr 100)
-        (=: lvs (cons Monster (: lvs)))
-        (commit 'upd)))
+(de genMonster (Loc)
+    (let M (new! '(+Monster) 
+        'id (genKey 'id '+Monster)
+        'sht "typical monster"
+        'lng "This monster has a leg protruding from its shoulder."
+        'hp 30
+        'att 3
+        'def 3
+        'pwr 30
+        'loc Loc)
+        M))
+
+(dm spawnMonster> ()
+    (genMonster This)
+    (commit 'upd))
 
 (class +Item +SudObj)
 
@@ -50,7 +54,5 @@
 
 (class +Monster +Living)
 
-(dm T ()
-    (super))
 
 (class +Hero +Living)
